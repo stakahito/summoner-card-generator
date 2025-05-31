@@ -8,10 +8,10 @@ const toKana = (search) => search.replace(/[\u3041-\u3096]/g, ch =>
 );
 
 const templates = [
-  { name: "theme1", url: "/templates/template1.jpg", stroke: "#00C198" },
-  { name: "theme2", url: "/templates/template2.jpg", stroke: "#2196F3" },
-  { name: "theme3", url: "/templates/template3.jpg", stroke: "#e87fa3" },
-  { name: "theme4", url: "/templates/template4.jpg", stroke: "#4d698e" },
+  { name: "theme1", url: "./templates/template1.jpg", stroke: "#00C198" },
+  { name: "theme2", url: "./templates/template2.jpg", stroke: "#2196F3" },
+  { name: "theme3", url: "./templates/template3.jpg", stroke: "#e87fa3" },
+  { name: "theme4", url: "./templates/template4.jpg", stroke: "#4d698e" },
 ];
 
 export default function App() {
