@@ -160,7 +160,6 @@ export default function App() {
                   }}
                   className={`flex flex-col items-center px-2 py-1 rounded-lg ${form.champions.includes(champ.id) ? "bg-blue-200" : "bg-gray-100"
                     } hover:shadow transition`}
-                  disabled={form.champions.length >= 9}
                 >
                   <img src={champ.image} alt={champ.id} className="w-12 h-12 rounded-lg my-1" />
                   <span className="text-xs">{champ.jp}</span>
