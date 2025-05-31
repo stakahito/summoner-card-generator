@@ -2,7 +2,7 @@
   "name": "summoner-card-generator",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://stakahito.github.io/summoner-card-generator/",
+  "homepage": "https://www.foor.in/summoner-card-generator/",
   "dependencies": {
     "konva": "^9.3.20",
     "react": "^18.3.1",
