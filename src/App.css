@@ -1,0 +1,32 @@
+.app {
+  display: flex;
+  gap: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 300px;
+}
+
+div {
+  font-family: 'Mochiy Pop One', sans-serif;
+}
+
+input, textarea, label, select, button, p {
+  font-size: 14px;
+  padding: 4px 8px;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+}
+
+button:hover {
+  background-color: #45a049;
+}

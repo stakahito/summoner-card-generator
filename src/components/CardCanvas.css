@@ -1,0 +1,13 @@
+.card-canvas-wrapper {
+  width: 100%;
+  max-width: 430px;
+  aspect-ratio: 16/9;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.card-canvas {
+  width: 1920;
+  height: 1080;
+  display: block;
+}
