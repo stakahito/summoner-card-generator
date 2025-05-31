@@ -61,29 +61,17 @@ export default function App() {
         <div className="flex-1 md:basis-1/3 md:max-w-[360px]">
           <div>
             <p className="font-semibold">テーマ選択</p>
-            <div className="flex flex-row items-center">
-              <button
-                className="full px-4 py-1 border bg-green-300 text-white font-bold shadow transition"
-                onClick={() =>
-                  setTemplateIndex(idx =>
-                    idx === 0 ? templates.length - 1 : idx - 1
-                  )
-                }>
-                &lt;
-              </button>
-              <div className="w-16 mx-3">
-                {templates[templateIndex].name}
-              </div>
-              <button
-                className="full px-4 py-1 border bg-green-300 text-white font-bold hover:shadow transition"
-                onClick={() =>
-                  setTemplateIndex(idx =>
-                    idx + 1 >= templates.length ? 0 : idx + 1
-                  )
-                }
-              >
-                &gt;
-              </button>
+            <div className="flex flex-wrap gap-2">
+              {templates.map((template, i) => (
+                <button
+                  key={template.name}
+                  onClick={() => setTemplateIndex(i)}
+                  className={`rounded-full px-4 py-1 text-sm border ${i === templateIndex ? "bg-blue-300 font-bold" : "bg-gray-100"
+                    } hover:shadow transition`}
+                >
+                  {template.name}
+                </button>
+              ))}
             </div>
           </div>
           <Input label="サモナーネーム" value={form.name} onChange={v => setForm(f => ({ ...f, name: v }))} />

@@ -101,7 +101,13 @@ const CardCanvas = ({ formData, templateUrl, strokeColor }) => {
   return (
     <>
       <div ref={containerRef} className="card-canvas-wrapper">
-        <Stage width={width} height={height} scale={{ x: scale, y: scale }} ref={previewStageRef} className="card-canvas">
+        <Stage
+          width={width}
+          height={height}
+          scale={{ x: scale, y: scale }}
+          ref={previewStageRef}
+          className="card-canvas"
+        >
           <Layer>
             {renderCardLayers()}
           </Layer>
