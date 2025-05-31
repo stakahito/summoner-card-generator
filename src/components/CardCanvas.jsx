@@ -29,7 +29,8 @@ const CardCanvas = ({ formData, templateUrl, strokeColor }) => {
   const width = 1920;
   const height = 1080;
   const containerRef = useRef();
-  const stageRef = useRef();
+  const previewStageRef = useRef();  // プレビュー用
+  const downloadStageRef = useRef(); // ダウンロード用
 
   const [scale, setScale] = useState(1);
 
@@ -44,8 +45,53 @@ const CardCanvas = ({ formData, templateUrl, strokeColor }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Canvas内容をコンポーネント化（両方で使い回し）
+  const renderCardLayers = () => (
+    <>
+      {templateImage && <KonvaImage image={templateImage} width={width} height={height} />}
+
+      <Text text={formData.name} {...layout.name} fontSize={layout.name.height} fontFamily="Mochiy Pop One" fill="#FFFFFF" stroke={strokeColor} strokeWidth={3} />
+      <Text text={formData.gender} {...layout.gender} fontSize={layout.gender.height} fontFamily="Mochiy Pop One" fill="#FFFFFF" stroke={strokeColor} strokeWidth={3} />
+      <Text text={formData.rankAndHistory} {...layout.rateAndHistory} fontSize={layout.rateAndHistory.height} fontFamily="Mochiy Pop One" fill="#FFFFFF" stroke={strokeColor} strokeWidth={3} />
+      <Text text={formData.weekday} {...layout.weekday} fontSize={layout.weekday.height} fontFamily="Mochiy Pop One" fill="#FFFFFF" stroke={strokeColor} strokeWidth={3} />
+      <Text text={formData.weekend} {...layout.weekend} fontSize={layout.weekend.height} fontFamily="Mochiy Pop One" fill="#FFFFFF" stroke={strokeColor} strokeWidth={3} />
+
+      {formData.roles.map(role => (
+        <Circle key={role} x={rolePositions[role].x} y={rolePositions[role].y} radius={35} stroke={strokeColor} strokeWidth={8} />
+      ))}
+      {vcPositions[formData.vc] && (
+        <Circle x={vcPositions[formData.vc].x} y={vcPositions[formData.vc].y} radius={35} stroke={strokeColor} strokeWidth={8} />
+      )}
+      <Group x={480} y={595}>
+        {formData.champions.map((champion, index) => (
+          <URLImage
+            key={champion}
+            src={getChampionIconUrl(champion)}
+            x={(index % 9) * 140}
+            y={0}
+            width={120}
+            height={120}
+          />
+        ))}
+      </Group>
+      <Text
+        text={formData.free}
+        x={layout.free.x}
+        y={layout.free.y}
+        fontSize={45}
+        fontFamily="Mochiy Pop One"
+        fill="#FFFFFF"
+        stroke={strokeColor}
+        strokeWidth={3}
+        width={layout.free.width}
+        lineHeight={1.4}
+      />
+    </>
+  );
+
+  // ダウンロード用は等倍
   const handleDownload = () => {
-    const uri = stageRef.current.toDataURL({ pixelRatio: 1 });
+    const uri = downloadStageRef.current.toDataURL({ pixelRatio: 1 });
     const link = document.createElement("a");
     link.download = "summoner-card.png";
     link.href = uri;
@@ -55,63 +101,20 @@ const CardCanvas = ({ formData, templateUrl, strokeColor }) => {
   return (
     <>
       <div ref={containerRef} className="card-canvas-wrapper">
-        <Stage width={width} height={height} scale={{ x: scale, y: scale }} ref={stageRef} className="card-canvas">
+        <Stage width={width} height={height} scale={{ x: scale, y: scale }} ref={previewStageRef} className="card-canvas">
           <Layer>
-            {templateImage && <KonvaImage image={templateImage} width={width} height={height} />}
-
-            <Text text={formData.name} x={layout.name.x} y={layout.name.y} fontSize={layout.name.height} fontFamily="Mochiy Pop One" fill="#FFFFFF" stroke={strokeColor} strokeWidth={3} />
-            <Text text={formData.gender} x={layout.gender.x} y={layout.gender.y} fontSize={layout.gender.height} fontFamily="Mochiy Pop One" fill="#FFFFFF" stroke={strokeColor} strokeWidth={3} />
-            <Text text={formData.rankAndHistory} x={layout.rateAndHistory.x} y={layout.rateAndHistory.y} fontSize={layout.rateAndHistory.height} fontFamily="Mochiy Pop One" fill="#FFFFFF" stroke={strokeColor} strokeWidth={3} />
-            <Text text={formData.weekday} x={layout.weekday.x} y={layout.weekday.y} fontSize={layout.weekday.height} fontFamily="Mochiy Pop One" fill="#FFFFFF" stroke={strokeColor} strokeWidth={3} />
-            <Text text={formData.weekend} x={layout.weekend.x} y={layout.weekend.y} fontSize={layout.weekend.height} fontFamily="Mochiy Pop One" fill="#FFFFFF" stroke={strokeColor} strokeWidth={3} />
-
-            {formData.roles.map(role => (
-              <Circle key={role} x={rolePositions[role].x} y={rolePositions[role].y} radius={35} stroke={strokeColor} strokeWidth={8} />
-            ))}
-
-            {vcPositions[formData.vc] && (
-              <Circle x={vcPositions[formData.vc].x} y={vcPositions[formData.vc].y} radius={35} stroke={strokeColor} strokeWidth={8} />
-            )}
-
-
-            <Group x={480} y={595}>
-              {formData.champions.map((champion, index) => (
-                <URLImage
-                  key={champion}
-                  src={getChampionIconUrl(champion)}
-                  x={(index % 9) * 140}
-                  y={0}
-                  width={120}
-                  height={120}
-                />
-              ))}
-            </Group>
-
-            <Group x={480} y={595}>
-              {formData.champions.map((champion, index) => (
-                <URLImage
-                  key={champion}
-                  src={getChampionIconUrl(champion)}
-                  x={(index % 9) * 140}
-                  y={0}
-                  width={120}
-                  height={120}
-                />
-              ))}
-            </Group>
-
-            <Text
-              text={formData.free}
-              x={layout.free.x}
-              y={layout.free.y}
-              fontSize={45}
-              fontFamily="Mochiy Pop One"
-              fill="#FFFFFF"
-              stroke={strokeColor}
-              strokeWidth={3}
-              width={layout.free.width}
-              lineHeight={1.4}
-            />
+            {renderCardLayers()}
+          </Layer>
+        </Stage>
+        <Stage
+          width={width}
+          height={height}
+          scale={{ x: 1, y: 1 }}
+          ref={downloadStageRef}
+          style={{ display: "none" }}
+        >
+          <Layer>
+            {renderCardLayers()}
           </Layer>
         </Stage>
       </div>
