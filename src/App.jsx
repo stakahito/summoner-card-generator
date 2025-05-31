@@ -162,7 +162,7 @@ export default function App() {
                     } hover:shadow transition`}
                   disabled={form.champions.length >= 9}
                 >
-                  <img src={champ.image} alt={champ.id} className="w-12 h-12 rounded-lg mb-1" />
+                  <img src={champ.image} alt={champ.id} className="w-12 h-12 rounded-lg my-1" />
                   <span className="text-xs">{champ.jp}</span>
                 </button>
               ))}
