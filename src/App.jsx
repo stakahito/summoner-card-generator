@@ -8,10 +8,10 @@ const toKana = (search) => search.replace(/[\u3041-\u3096]/g, ch =>
 );
 
 const templates = [
-  { name: "theme1", url: "./templates/template1.jpg", stroke: "#00C198" },
-  { name: "theme2", url: "./templates/template2.jpg", stroke: "#2196F3" },
-  { name: "theme3", url: "./templates/template3.jpg", stroke: "#e87fa3" },
-  { name: "theme4", url: "./templates/template4.jpg", stroke: "#4d698e" },
+  { url: "./templates/template1.jpg", stroke: "#00C198" },
+  { url: "./templates/template2.jpg", stroke: "#2196F3" },
+  { url: "./templates/template3.jpg", stroke: "#e87fa3" },
+  { url: "./templates/template4.jpg", stroke: "#4d698e" },
 ];
 
 export default function App() {
@@ -62,14 +62,14 @@ export default function App() {
           <div>
             <p className="font-semibold">テーマ選択</p>
             <div className="flex flex-wrap gap-2">
-              {templates.map((template, i) => (
+              {templates.map((_, i) => (
                 <button
-                  key={template.name}
+                  key={i}
                   onClick={() => setTemplateIndex(i)}
-                  className={`rounded-full px-4 py-1 text-sm border ${i === templateIndex ? "bg-blue-300 font-bold" : "bg-gray-100"
+                  className={`rounded-full w-7 h-7 text-sm border ${i === templateIndex ? "bg-blue-300 font-bold" : "bg-gray-100"
                     } hover:shadow transition`}
                 >
-                  {template.name}
+                  {i}
                 </button>
               ))}
             </div>
